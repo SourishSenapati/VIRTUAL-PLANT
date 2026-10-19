@@ -1,0 +1,63 @@
+# EDUCATIONAL & ACADEMIC LICENSE
+## (Non-Commercial with Mandatory Attribution)
+
+**Copyright (c) 2026 Sourish Senapati**  
+*Department of Chemical Engineering, Jadavpur University, Kolkata, India.*  
+*GitHub: [@SourishSenapati](https://github.com/SourishSenapati)*
+
+---
+
+### CORE LICENSE GRANT & RESTRICTIONS
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this repository, including all virtual plant models, SolidWorks specifications, Gazebo physical worlds, ROS 2 simulation packages, process kinetics engines, CAD blueprints, drawings, flowsheets (BFD/PFD/P&ID), and underlying source code/scripts (collectively, the "Work"), **SUBJECT STRICTLY TO THE FOLLOWING CONDITIONS**:
+
+#### 1. STRICTLY FOR EDUCATIONAL & ACADEMIC USE ONLY
+
+- The Work is free to use, study, reference, simulate, reproduce, and adapt **ONLY** for non-commercial educational, academic, classroom instruction, scholarly research, university coursework, or personal learning purposes.
+- **COMMERCIAL USE IS STRICTLY PROHIBITED**: You may NOT use, distribute, sublicense, sell, fabricate from, or incorporate any part of this Work (in whole or in part, modified or unmodified) for commercial operations, commercial software, industrial exploitation, profit-generating ventures, or proprietary products without explicit, prior written authorization from the copyright holder.
+
+#### 2. MANDATORY ATTRIBUTION / CREDIT
+
+- Any academic publication, thesis, report, lecture slide, public demonstration, digital twin deployment, or derivative work that uses, references, or builds upon this Work **MUST** clearly and prominently give full attribution and credit to **Sourish Senapati**.
+- The attribution must retain all original copyright notices, department affiliations, and a direct link to the original repository:
+  `https://github.com/SourishSenapati/VIRTUAL-PLANT`
+
+---
+
+### MANDATORY ATTRIBUTION NOTICE
+
+Whenever citing, referencing, or reproducing any portion of these simulation models, worlds, or code, include the following attribution block:
+
+> **Virtual Petroleum Refinery Simulation & CAD Digital Twin by:**  
+> **Sourish Senapati**  
+> *Department of Chemical Engineering, Jadavpur University*  
+> Repository: [SourishSenapati/VIRTUAL-PLANT](https://github.com/SourishSenapati/VIRTUAL-PLANT)  
+> Licensed for Non-Commercial Educational Use Only with Mandatory Attribution.
+
+---
+
+### APPLICABLE LICENSES BY ASSET TYPE
+
+#### A. CAD Blueprints, Gazebo SDF/World Models, Process Flowsheets & Documentation
+
+All engineering drawings (PDF and PNG formats), Gazebo simulation worlds (`.world`, `.sdf`, `.urdf`), 3D SolidWorks specifications, PFDs, P&IDs, and equipment models are licensed under:
+
+**Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)**
+
+- **NonCommercial**: You may not use the material for commercial purposes.
+- **Attribution**: You must give appropriate credit to Sourish Senapati, provide a link to the license, and indicate if changes were made.
+- Full Legal Code: https://creativecommons.org/licenses/by-nc/4.0/legalcode
+
+#### B. ROS 2 Nodes, Kinetic Simulation Engines & Source Code
+
+All Python and ROS 2 simulation scripts, nodes, launch files, and mathematical solvers are licensed under the **Educational Non-Commercial Source License**:
+
+- Free to run, modify, and learn from exclusively for educational and non-commercial academic research.
+- Redistribution of scripts, in original or modified form, must retain this copyright and permission notice and credit Sourish Senapati.
+- Commercial exploitation, bundling into paid software, or proprietary re-licensing is strictly prohibited.
+
+---
+
+### DISCLAIMER OF WARRANTY
+
+THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHOR OR COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE WORK OR THE USE OR OTHER DEALINGS IN THE WORK.

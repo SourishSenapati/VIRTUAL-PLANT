@@ -1,0 +1,54 @@
+# SAFETY INSTRUMENTED SYSTEMS (SIS) & CAUSE-AND-EFFECT TRIP MATRIX
+# Compliance: IEC 61511 / IEC 61508 / API 521 (SIL-2 / SIL-3 Protection Layers)
+# Author: Sourish Senapati (Jadavpur University)
+
+protection_layers:
+  layer_1_bpcs: "Basic Process Control System PID loop regulation (Normal operating window)"
+  layer_2_alarms: "Audible & visual annunciator alarms requiring operator intervention"
+  layer_3_sis: "Safety Instrumented System independent hardware interlocks & ESD valves"
+  layer_4_psv: "Mechanical spring-loaded Pressure Safety Relief Valves to Flare"
+
+trip_interlocks:
+  - trip_id: "ESD-101"
+    unit: "CDU Atmospheric Column"
+    initiator: "PDIT-101 (Column Differential Pressure) > 38.0 kPa"
+    description: "Flooding / Tray Damage Protection"
+    safety_action:
+      - "Ramp down crude feed pump P-101 to 40%"
+      - "Cut fired heater F-101 fuel gas control valve by 50%"
+      - "Annunciate High-High DP Alarm to DCS console"
+
+  - trip_id: "ESD-102"
+    unit: "CDU Bottoms Sump"
+    initiator: "LT-102 (Liquid Level) < 12.0 %"
+    description: "Bottoms Pump Cavitation & Heater Dry-out Protection"
+    safety_action:
+      - "Trip atmospheric residue pump P-102A/B off"
+      - "Close bottoms isolation ESDV-102"
+      - "Divert feed to quench loop"
+
+  - trip_id: "ESD-201"
+    unit: "FCCU Reactor / Regenerator"
+    initiator: "PDT-201 (Spent Catalyst Slide Valve Differential Pressure) < 10.0 kPa"
+    description: "Reverse Flow / Hydrocarbon Ingress into Regenerator Prevention"
+    safety_action:
+      - "Instantaneous trip closure of Spent Catalyst Slide Valve within 0.8 seconds"
+      - "Open emergency steam purge to riser base"
+      - "Trip main oil feed emergency block valve XV-201"
+
+  - trip_id: "ESD-301"
+    unit: "Hydrocracker Reactor R-301"
+    initiator: "TT-301 (Bed 2 Catalyst Skin Temperature) > 445.0 C"
+    description: "Thermal Runaway / Methanation Exotherm Prevention"
+    safety_action:
+      - "Open maximum quench hydrogen emergency injection valve QCV-301"
+      - "Trigger High Pressure Depressuring System (HPDS) to flare header @ 21 bar/min"
+      - "Trip feed pump P-301 and isolate heater F-301"
+
+  - trip_id: "ESD-401"
+    unit: "Delayed Coker Drum V-401A"
+    initiator: "PT-401 (Drum Top Pressure) > 4.2 bar(g)"
+    description: "Coke Drum Overpressure Protection"
+    safety_action:
+      - "Open automated blowdown valve BDV-401 to coker quench tower"
+      - "Pop mechanical relief PSV-401A (Set @ 4.8 bar(g)) to elevated flare stack"

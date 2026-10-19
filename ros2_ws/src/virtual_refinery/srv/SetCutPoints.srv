@@ -1,0 +1,11 @@
+# Service to dynamically update CDU/VDU cut-point temperatures
+string unit_id
+float64 naphtha_cut_c
+float64 kerosene_cut_c
+float64 diesel_cut_c
+float64 lvgo_cut_c
+float64 hvgo_cut_c
+---
+bool success
+string status_message
+float64[] updated_yield_percentages

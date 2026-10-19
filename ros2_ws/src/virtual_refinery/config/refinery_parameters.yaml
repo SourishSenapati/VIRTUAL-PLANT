@@ -1,0 +1,83 @@
+# REFINERY PROCESS PHYSICS PARAMETERS & FEEDSTOCK ASSAY BASIS
+# Basis: 100,000 BPD Arabian Light / Brent Blend Crude Oil
+# Author: Sourish Senapati (Jadavpur University)
+
+crude_feedstock:
+  name: "Arabian Light / Brent Crude Blend"
+  nominal_rate_bpd: 100000.0
+  density_kg_m3: 852.4
+  api_gravity: 34.5
+  sulfur_wt_pct: 1.45
+  viscosity_cst_40c: 4.85
+  tan_mg_koh_g: 0.12
+  salt_ptb: 8.5
+  characterization_k_factor: 11.95
+
+atmospheric_distillation_unit:
+  flash_zone_temp_c: 365.0
+  flash_zone_press_bar: 1.55
+  top_tray_temp_c: 108.0
+  top_pressure_bar: 1.25
+  reflux_ratio: 1.85
+  stripping_steam_kg_per_m3: 12.5
+  trays_total: 48
+  cut_points_c:
+    off_gas_lpg: {min: -40.0, max: 35.0, yield_wt_pct: 2.8}
+    light_naphtha: {min: 35.0, max: 80.0, yield_wt_pct: 5.5, api: 72.0}
+    heavy_naphtha: {min: 80.0, max: 150.0, yield_wt_pct: 14.2, api: 54.5}
+    kerosene_jet: {min: 150.0, max: 240.0, yield_wt_pct: 12.8, api: 42.0}
+    diesel_ago: {min: 240.0, max: 360.0, yield_wt_pct: 26.5, api: 34.0}
+    atmospheric_residue: {min: 360.0, max: 850.0, yield_wt_pct: 38.2, api: 14.5}
+
+vacuum_distillation_unit:
+  furnace_outlet_temp_c: 415.0
+  tower_top_press_mmhg: 25.0
+  flash_zone_press_mmhg: 35.0
+  steam_stripping_rate_kg_h: 4200.0
+  cut_points_c:
+    lvgo: {min: 360.0, max: 440.0, yield_wt_pct: 11.5, api: 26.0}
+    hvgo: {min: 440.0, max: 540.0, yield_wt_pct: 18.2, api: 20.5}
+    vacuum_residue: {min: 540.0, max: 850.0, yield_wt_pct: 8.5, api: 5.5}
+
+fluid_catalytic_cracking_unit:
+  feed_type: "HVGO & LVGO Blend"
+  riser_temp_c: 535.0
+  riser_press_bar: 2.5
+  catalyst_to_oil_ratio: 6.8
+  catalyst_circulation_t_min: 28.5
+  coke_yield_wt_pct: 5.2
+  regenerator_temp_c: 705.0
+  regenerator_air_nm3_h: 145000.0
+  conversion_vol_pct: 76.5
+  product_yields_vol_pct:
+    fuel_gas: 4.8
+    lpg_c3_c4: 18.2
+    fcc_gasoline_ron92: 48.5
+    light_cycle_oil_lco: 18.5
+    clarified_slurry_oil: 5.0
+
+hydrocracking_unit:
+  feed_type: "HVGO & Coker Heavy Gas Oil"
+  reactor_1_pressure_bar: 155.0
+  reactor_1_temp_c: 395.0
+  reactor_2_pressure_bar: 165.0
+  reactor_2_temp_c: 410.0
+  h2_feed_ratio_nm3_m3: 1400.0
+  conversion_per_pass_pct: 65.0
+  product_yields_vol_pct:
+    light_ends_c1_c4: 6.2
+    heavy_naphtha: 18.5
+    jet_fuel: 28.0
+    ultra_low_sulfur_diesel: 52.0
+
+delayed_coking_unit:
+  feed_type: "Vacuum Residue (VR > 540 C)"
+  furnace_outlet_temp_c: 498.0
+  drum_pressure_bar: 2.1
+  drum_coking_cycle_hours: 24.0
+  yields_wt_pct:
+    coker_gas: 8.5
+    coker_naphtha: 14.8
+    light_coker_gas_oil: 32.5
+    heavy_coker_gas_oil: 16.2
+    petroleum_coke: 28.0
