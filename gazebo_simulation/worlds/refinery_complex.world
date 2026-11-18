@@ -1,13 +1,24 @@
 <?xml version="1.0" ?>
 <!--
   VIRTUAL REFINERY COMPLEX - GAZEBO SIMULATION WORLD
-  Author: Sourish Senapati (Jadavpur University, Chemical Engineering)
-  Includes: CDU (C-101), VDU (C-102), FCCU (R-201/202), Hydrocracker (R-301),
-            Delayed Coker (V-401A/B), Fired Furnaces, Pipe Racks, Tank Farm, Flare Stack.
+  Author: Sourish Senapati (Jadavpur University, Department of Chemical Engineering)
+  Standards: API RP 500, NFPA 30, OISD-118 Spacing, ASME BPVC Sec VIII
+  
+  SPATIAL COORDINATE ARCHITECTURE (600 m x 400 m PLANT FOOTPRINT):
+    - Ground Plane: 650 m x 450 m Industrial Concrete / Asphalt Pad
+    - Multi-Tier Pipe Rack Spine: Central axis Y = 0.0 m (X: -220 m to +220 m)
+    - Unit 100: Atmospheric CDU (C-101, H-101, DES-101)  @ [-120.0, 45.0, 0.0]
+    - Unit 200: Vacuum Distillation VDU (C-102, H-102)     @ [-60.0, 45.0, 0.0]
+    - Unit 300: Fluid Catalytic Cracking FCCU (R-301/302)  @ [ 10.0, 50.0, 0.0]
+    - Unit 400: High-Pressure Hydrocracker HCU (R-401/402) @ [ 85.0, 50.0, 0.0]
+    - Unit 500: Delayed Coking Complex DCU (D-501A/B)      @ [ 85.0,-45.0, 0.0]
+    - Tank Farm: Crude & Finished Product Storage          @ [-100.0,-50.0, 0.0]
+    - Central Control Room (CCR / Blast Resistant)         @ [ 10.0,-30.0, 0.0]
+    - Emergency Flare Stack (API 521 Sterile Zone R=150m)  @ [ 160.0, 60.0, 0.0]
 -->
 <sdf version="1.6">
   <world name="refinery_complex_world">
-    <!-- Physics Engine Configuration (ODE accurate dynamic simulation) -->
+    <!-- Physics Engine Configuration (ODE accurate dynamic simulation @ 1000 Hz) -->
     <physics name="default_physics" default="0" type="ode">
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1.0</real_time_factor>
@@ -42,7 +53,7 @@
     <!-- Directional Sun Light -->
     <light type="directional" name="sun">
       <cast_shadows>true</cast_shadows>
-      <pose>0 0 120 0 0.45 0.65</pose>
+      <pose>0 0 150 0 0.45 0.65</pose>
       <diffuse>0.9 0.9 0.85 1</diffuse>
       <specular>0.3 0.3 0.3 1</specular>
       <attenuation>
@@ -54,20 +65,22 @@
       <direction>-0.5 0.5 -1.0</direction>
     </light>
 
-    <!-- High-Mast Floodlight Over Battery Limits -->
-    <light type="point" name="plant_floodlight_1">
-      <pose>25 10 35 0 0 0</pose>
+    <!-- High-Mast Area Floodlights -->
+    <light type="point" name="floodlight_isbl_west">
+      <pose>-80 40 35 0 0 0</pose>
       <diffuse>1.0 0.95 0.8 1</diffuse>
       <specular>0.5 0.5 0.5 1</specular>
-      <attenuation>
-        <range>120</range>
-        <constant>0.5</constant>
-        <linear>0.02</linear>
-        <quadratic>0.002</quadratic>
-      </attenuation>
+      <attenuation><range>150</range><constant>0.5</constant><linear>0.015</linear><quadratic>0.001</quadratic></attenuation>
     </light>
 
-    <!-- Ground Plane (Industrial Concrete / Asphalt Pad) -->
+    <light type="point" name="floodlight_isbl_east">
+      <pose>50 40 35 0 0 0</pose>
+      <diffuse>1.0 0.95 0.8 1</diffuse>
+      <specular>0.5 0.5 0.5 1</specular>
+      <attenuation><range>150</range><constant>0.5</constant><linear>0.015</linear><quadratic>0.001</quadratic></attenuation>
+    </light>
+
+    <!-- Ground Plane (Industrial 650 m x 450 m Plant Footprint) -->
     <model name="refinery_ground_plane">
       <static>true</static>
       <link name="ground_link">
@@ -75,15 +88,12 @@
           <geometry>
             <plane>
               <normal>0 0 1</normal>
-              <size>350 350</size>
+              <size>650 450</size>
             </plane>
           </geometry>
           <surface>
             <friction>
-              <ode>
-                <mu>100</mu>
-                <mu2>50</mu2>
-              </ode>
+              <ode><mu>100</mu><mu2>50</mu2></ode>
             </friction>
           </surface>
         </collision>
@@ -91,7 +101,7 @@
           <geometry>
             <plane>
               <normal>0 0 1</normal>
-              <size>350 350</size>
+              <size>650 450</size>
             </plane>
           </geometry>
           <material>
@@ -103,270 +113,210 @@
       </link>
     </model>
 
-    <!-- 1. ATMOSPHERIC CRUDE DISTILLATION COLUMN (CDU / C-101) -->
-    <model name="cdu_column">
+    <!-- ═════════════════════════════════════════════════════════════════════════ -->
+    <!-- 1. UNIT 100: ATMOSPHERIC CRUDE DISTILLATION UNIT (CDU / C-101)           -->
+    <!-- Coordinates: [-120.0, 45.0, 0.0]                                          -->
+    <!-- ═════════════════════════════════════════════════════════════════════════ -->
+    <model name="cdu_complex">
       <static>true</static>
-      <pose>0 0 0 0 0 0</pose>
+      <pose>-120 45 0 0 0 0</pose>
       <link name="cdu_link">
-        <!-- Foundation -->
-        <collision name="cdu_fnd_col">
-          <pose>0 0 0.75 0 0 0</pose>
-          <geometry><cylinder><radius>3.8</radius><length>1.5</length></cylinder></geometry>
-        </collision>
-        <visual name="cdu_fnd_vis">
-          <pose>0 0 0.75 0 0 0</pose>
-          <geometry><cylinder><radius>3.8</radius><length>1.5</length></cylinder></geometry>
-          <material><ambient>0.5 0.5 0.5 1</ambient><diffuse>0.5 0.5 0.5 1</diffuse></material>
-        </visual>
-        <!-- Skirt -->
-        <collision name="cdu_skirt_col">
-          <pose>0 0 5.0 0 0 0</pose>
-          <geometry><cylinder><radius>2.6</radius><length>7.0</length></cylinder></geometry>
-        </collision>
-        <visual name="cdu_skirt_vis">
-          <pose>0 0 5.0 0 0 0</pose>
-          <geometry><cylinder><radius>2.6</radius><length>7.0</length></cylinder></geometry>
-          <material><ambient>0.25 0.28 0.30 1</ambient><diffuse>0.35 0.38 0.40 1</diffuse></material>
-        </visual>
-        <!-- Main Column Body (5.2m OD x 54m height) -->
-        <collision name="cdu_body_col">
-          <pose>0 0 35.5 0 0 0</pose>
-          <geometry><cylinder><radius>2.6</radius><length>54.0</length></cylinder></geometry>
-        </collision>
-        <visual name="cdu_body_vis">
-          <pose>0 0 35.5 0 0 0</pose>
-          <geometry><cylinder><radius>2.6</radius><length>54.0</length></cylinder></geometry>
-          <material><ambient>0.7 0.75 0.8 1</ambient><diffuse>0.8 0.85 0.9 1</diffuse><specular>0.6 0.6 0.6 1</specular></material>
-        </visual>
-        <!-- Top Dished Head -->
-        <visual name="cdu_top_head">
-          <pose>0 0 62.5 0 0 0</pose>
-          <geometry><sphere><radius>2.6</radius></sphere></geometry>
-          <material><ambient>0.7 0.75 0.8 1</ambient><diffuse>0.8 0.85 0.9 1</diffuse></material>
-        </visual>
+        <!-- Foundation Pad -->
+        <collision name="cdu_fnd_col"><pose>0 0 0.75 0 0 0</pose><geometry><cylinder><radius>4.2</radius><length>1.5</length></cylinder></geometry></collision>
+        <visual name="cdu_fnd_vis"><pose>0 0 0.75 0 0 0</pose><geometry><cylinder><radius>4.2</radius><length>1.5</length></cylinder></geometry><material><ambient>0.5 0.5 0.5 1</ambient><diffuse>0.5 0.5 0.5 1</diffuse></material></visual>
+        
+        <!-- Skirt (7m Height) -->
+        <collision name="cdu_skirt_col"><pose>0 0 5.0 0 0 0</pose><geometry><cylinder><radius>2.6</radius><length>7.0</length></cylinder></geometry></collision>
+        <visual name="cdu_skirt_vis"><pose>0 0 5.0 0 0 0</pose><geometry><cylinder><radius>2.6</radius><length>7.0</length></cylinder></geometry><material><ambient>0.25 0.28 0.30 1</ambient><diffuse>0.35 0.38 0.40 1</diffuse></material></visual>
+        
+        <!-- Main Column Body (5.2m OD x 54m Height, 48 Trays) -->
+        <collision name="cdu_body_col"><pose>0 0 35.5 0 0 0</pose><geometry><cylinder><radius>2.6</radius><length>54.0</length></cylinder></geometry></collision>
+        <visual name="cdu_body_vis"><pose>0 0 35.5 0 0 0</pose><geometry><cylinder><radius>2.6</radius><length>54.0</length></cylinder></geometry><material><ambient>0.7 0.75 0.8 1</ambient><diffuse>0.8 0.85 0.9 1</diffuse><specular>0.6 0.6 0.6 1</specular></material></visual>
+        
+        <!-- Top 2:1 Semi-Ellipsoidal Head (ASME Sec VIII) -->
+        <visual name="cdu_top_head"><pose>0 0 62.5 0 0 0</pose><geometry><sphere><radius>2.6</radius></sphere></geometry><material><ambient>0.7 0.75 0.8 1</ambient><diffuse>0.8 0.85 0.9 1</diffuse></material></visual>
+        
+        <!-- Fired Crude Furnace H-101 (Separated 15m West) -->
+        <collision name="h101_col"><pose>-15.0 0 7.5 0 0 0</pose><geometry><box><size>10.0 8.0 15.0</size></geometry></collision>
+        <visual name="h101_vis"><pose>-15.0 0 7.5 0 0 0</pose><geometry><box><size>10.0 8.0 15.0</size></geometry><material><ambient>0.8 0.5 0.2 1</ambient><diffuse>0.85 0.55 0.25 1</diffuse></material></visual>
+        <!-- Furnace Stack (35m tall) -->
+        <visual name="h101_stack"><pose>-15.0 0 25.0 0 0 0</pose><geometry><cylinder><radius>1.1</radius><length>20.0</length></cylinder></geometry><material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.4 0.4 0.4 1</diffuse></material></visual>
       </link>
     </model>
 
-    <!-- 2. VACUUM DISTILLATION COLUMN (VDU / C-102) -->
-    <model name="vdu_column">
+    <!-- ═════════════════════════════════════════════════════════════════════════ -->
+    <!-- 2. UNIT 200: VACUUM DISTILLATION UNIT (VDU / C-102)                      -->
+    <!-- Coordinates: [-60.0, 45.0, 0.0]                                           -->
+    <!-- ═════════════════════════════════════════════════════════════════════════ -->
+    <model name="vdu_complex">
       <static>true</static>
-      <pose>18 0 0 0 0 0</pose>
+      <pose>-60 45 0 0 0 0</pose>
       <link name="vdu_link">
-        <!-- Sump & Skirt -->
-        <collision name="vdu_skirt_col">
-          <pose>0 0 4.0 0 0 0</pose>
-          <geometry><cylinder><radius>3.2</radius><length>8.0</length></cylinder></geometry>
-        </collision>
-        <visual name="vdu_skirt_vis">
-          <pose>0 0 4.0 0 0 0</pose>
-          <geometry><cylinder><radius>3.2</radius><length>8.0</length></cylinder></geometry>
-          <material><ambient>0.3 0.3 0.35 1</ambient><diffuse>0.4 0.4 0.45 1</diffuse></material>
-        </visual>
-        <!-- Lower Flash Zone Bulb (8.5m OD x 18m height) -->
-        <collision name="vdu_bulb_col">
-          <pose>0 0 17.0 0 0 0</pose>
-          <geometry><cylinder><radius>4.25</radius><length>18.0</length></cylinder></geometry>
-        </collision>
-        <visual name="vdu_bulb_vis">
-          <pose>0 0 17.0 0 0 0</pose>
-          <geometry><cylinder><radius>4.25</radius><length>18.0</length></cylinder></geometry>
-          <material><ambient>0.65 0.70 0.75 1</ambient><diffuse>0.75 0.80 0.85 1</diffuse><specular>0.5 0.5 0.5 1</specular></material>
-        </visual>
-        <!-- Upper Section (6.0m OD x 24m height) -->
-        <collision name="vdu_upper_col">
-          <pose>0 0 38.0 0 0 0</pose>
-          <geometry><cylinder><radius>3.0</radius><length>24.0</length></cylinder></geometry>
-        </collision>
-        <visual name="vdu_upper_vis">
-          <pose>0 0 38.0 0 0 0</pose>
-          <geometry><cylinder><radius>3.0</radius><length>24.0</length></cylinder></geometry>
-          <material><ambient>0.65 0.70 0.75 1</ambient><diffuse>0.75 0.80 0.85 1</diffuse></material>
-        </visual>
-        <!-- Vacuum Transfer Duct (Overhead line to ejectors) -->
-        <visual name="vdu_vac_line">
-          <pose>2.5 0 50.0 0 1.57 0</pose>
-          <geometry><cylinder><radius>1.1</radius><length>5.0</length></cylinder></geometry>
-          <material><ambient>0.8 0.4 0.1 1</ambient><diffuse>0.9 0.5 0.1 1</diffuse></material>
-        </visual>
+        <!-- Foundation & Sump Skirt -->
+        <collision name="vdu_skirt_col"><pose>0 0 4.0 0 0 0</pose><geometry><cylinder><radius>3.2</radius><length>8.0</length></cylinder></geometry></collision>
+        <visual name="vdu_skirt_vis"><pose>0 0 4.0 0 0 0</pose><geometry><cylinder><radius>3.2</radius><length>8.0</length></cylinder></geometry><material><ambient>0.3 0.3 0.35 1</ambient><diffuse>0.4 0.4 0.45 1</diffuse></material></visual>
+        
+        <!-- Lower Flash Zone Bulb (8.5m OD x 18m Height @ 25 mmHg) -->
+        <collision name="vdu_bulb_col"><pose>0 0 17.0 0 0 0</pose><geometry><cylinder><radius>4.25</radius><length>18.0</length></cylinder></geometry></collision>
+        <visual name="vdu_bulb_vis"><pose>0 0 17.0 0 0 0</pose><geometry><cylinder><radius>4.25</radius><length>18.0</length></cylinder></geometry><material><ambient>0.65 0.70 0.75 1</ambient><diffuse>0.75 0.80 0.85 1</diffuse><specular>0.5 0.5 0.5 1</specular></material></visual>
+        
+        <!-- Upper Fractionation Section (6.0m OD x 24m Height) -->
+        <collision name="vdu_upper_col"><pose>0 0 38.0 0 0 0</pose><geometry><cylinder><radius>3.0</radius><length>24.0</length></cylinder></geometry></collision>
+        <visual name="vdu_upper_vis"><pose>0 0 38.0 0 0 0</pose><geometry><cylinder><radius>3.0</radius><length>24.0</length></cylinder></geometry><material><ambient>0.65 0.70 0.75 1</ambient><diffuse>0.75 0.80 0.85 1</diffuse></material></visual>
+        
+        <!-- Overhead Vacuum Transfer Duct to 3-Stage Steam Ejectors -->
+        <visual name="vdu_vac_line"><pose>2.5 0 50.0 0 1.57 0</pose><geometry><cylinder><radius>1.1</radius><length>5.0</length></cylinder></geometry><material><ambient>0.8 0.4 0.1 1</ambient><diffuse>0.9 0.5 0.1 1</diffuse></material></visual>
+        
+        <!-- Vacuum Furnace H-102 (18m West) -->
+        <visual name="h102_vis"><pose>-16.0 0 7.0 0 0 0</pose><geometry><box><size>9.0 8.0 14.0</size></geometry><material><ambient>0.8 0.5 0.2 1</ambient><diffuse>0.85 0.55 0.25 1</diffuse></material></visual>
+        <visual name="h102_stack"><pose>-16.0 0 23.0 0 0 0</pose><geometry><cylinder><radius>1.0</radius><length>18.0</length></cylinder></geometry><material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.4 0.4 0.4 1</diffuse></material></visual>
       </link>
     </model>
 
-    <!-- 3. FLUID CATALYTIC CRACKING UNIT (FCCU / R-201 & R-202) -->
+    <!-- ═════════════════════════════════════════════════════════════════════════ -->
+    <!-- 3. UNIT 300: FLUID CATALYTIC CRACKING UNIT (FCCU / R-301 & R-302)        -->
+    <!-- Coordinates: [10.0, 50.0, 0.0]                                            -->
+    <!-- ═════════════════════════════════════════════════════════════════════════ -->
     <model name="fccu_complex">
       <static>true</static>
-      <pose>40 12 0 0 0 0</pose>
+      <pose>10 50 0 0 0 0</pose>
       <link name="fccu_link">
-        <!-- FCC Regenerator (Large 11.5m diameter vessel) -->
-        <collision name="fcc_regen_col">
-          <pose>0 0 20.0 0 0 0</pose>
-          <geometry><cylinder><radius>5.75</radius><length>32.0</length></cylinder></geometry>
-        </collision>
-        <visual name="fcc_regen_vis">
-          <pose>0 0 20.0 0 0 0</pose>
-          <geometry><cylinder><radius>5.75</radius><length>32.0</length></cylinder></geometry>
-          <material><ambient>0.85 0.65 0.35 1</ambient><diffuse>0.95 0.75 0.40 1</diffuse></material>
-        </visual>
-        <!-- FCC Reactor / Disengager (Side by side at x = -8m, y = 4m) -->
-        <collision name="fcc_rx_col">
-          <pose>-8.0 4.0 22.0 0 0 0</pose>
-          <geometry><cylinder><radius>2.4</radius><length>28.0</length></cylinder></geometry>
-        </collision>
-        <visual name="fcc_rx_vis">
-          <pose>-8.0 4.0 22.0 0 0 0</pose>
-          <geometry><cylinder><radius>2.4</radius><length>28.0</length></cylinder></geometry>
-          <material><ambient>0.75 0.60 0.40 1</ambient><diffuse>0.85 0.70 0.45 1</diffuse></material>
-        </visual>
-        <!-- Riser Tube (Vertical 1.4m diameter x 38m height) -->
-        <visual name="fcc_riser_vis">
-          <pose>-8.0 4.0 19.0 0 0 0</pose>
-          <geometry><cylinder><radius>0.7</radius><length>38.0</length></cylinder></geometry>
-          <material><ambient>0.9 0.2 0.2 1</ambient><diffuse>0.95 0.25 0.25 1</diffuse></material>
-        </visual>
-        <!-- Catalyst Transfer Standpipes -->
-        <visual name="fcc_standpipe_1">
-          <pose>-4.0 2.0 10.0 0 0.8 0.4</pose>
-          <geometry><cylinder><radius>0.45</radius><length>12.0</length></cylinder></geometry>
-          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.35 0.35 0.35 1</diffuse></material>
-        </visual>
+        <!-- Catalyst Regenerator R-302 (11.5m OD x 32m Height, 710 C) -->
+        <collision name="fcc_regen_col"><pose>0 0 20.0 0 0 0</pose><geometry><cylinder><radius>5.75</radius><length>32.0</length></cylinder></geometry></collision>
+        <visual name="fcc_regen_vis"><pose>0 0 20.0 0 0 0</pose><geometry><cylinder><radius>5.75</radius><length>32.0</length></cylinder></geometry><material><ambient>0.85 0.65 0.35 1</ambient><diffuse>0.95 0.75 0.40 1</diffuse></material></visual>
+        
+        <!-- Reactor / Disengager R-301 (Side-by-side @ [-8, 4]) -->
+        <collision name="fcc_rx_col"><pose>-8.0 4.0 22.0 0 0 0</pose><geometry><cylinder><radius>2.4</radius><length>28.0</length></cylinder></geometry></collision>
+        <visual name="fcc_rx_vis"><pose>-8.0 4.0 22.0 0 0 0</pose><geometry><cylinder><radius>2.4</radius><length>28.0</length></cylinder></geometry><material><ambient>0.75 0.60 0.40 1</ambient><diffuse>0.85 0.70 0.45 1</diffuse></material></visual>
+        
+        <!-- Cracking Riser Tube (1.4m OD x 38m Vertical Tube) -->
+        <visual name="fcc_riser_vis"><pose>-8.0 4.0 19.0 0 0 0</pose><geometry><cylinder><radius>0.7</radius><length>38.0</length></cylinder></geometry><material><ambient>0.9 0.2 0.2 1</ambient><diffuse>0.95 0.25 0.25 1</diffuse></material></visual>
+        
+        <!-- Regenerated Catalyst U-Bend & Standpipe -->
+        <visual name="fcc_standpipe"><pose>-4.0 2.0 10.0 0 0.8 0.4</pose><geometry><cylinder><radius>0.45</radius><length>12.0</length></cylinder></geometry><material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.35 0.35 0.35 1</diffuse></material></visual>
       </link>
     </model>
 
-    <!-- 4. HYDROCRACKING UNIT (HCU / R-301 & R-302) -->
-    <model name="hydrocracker_unit">
+    <!-- ═════════════════════════════════════════════════════════════════════════ -->
+    <!-- 4. UNIT 400: TWO-STAGE HYDROCRACKER COMPLEX (HCU / R-401 & R-402)         -->
+    <!-- Coordinates: [85.0, 50.0, 0.0]                                            -->
+    <!-- ═════════════════════════════════════════════════════════════════════════ -->
+    <model name="hydrocracker_complex">
       <static>true</static>
-      <pose>40 -16 0 0 0 0</pose>
+      <pose>85 50 0 0 0 0</pose>
       <link name="hcu_link">
-        <!-- Reactor 1 (3.6m ID x 28m heavy wall) -->
-        <collision name="hcu_r1_col">
-          <pose>0 0 16.0 0 0 0</pose>
-          <geometry><cylinder><radius>1.8</radius><length>28.0</length></cylinder></geometry>
-        </collision>
-        <visual name="hcu_r1_vis">
-          <pose>0 0 16.0 0 0 0</pose>
-          <geometry><cylinder><radius>1.8</radius><length>28.0</length></cylinder></geometry>
-          <material><ambient>0.2 0.3 0.5 1</ambient><diffuse>0.25 0.4 0.65 1</diffuse><specular>0.7 0.7 0.8 1</specular></material>
-        </visual>
-        <!-- Reactor 2 (3.8m ID x 32m heavy wall) -->
-        <collision name="hcu_r2_col">
-          <pose>6.5 0 18.0 0 0 0</pose>
-          <geometry><cylinder><radius>1.9</radius><length>32.0</length></cylinder></geometry>
-        </collision>
-        <visual name="hcu_r2_vis">
-          <pose>6.5 0 18.0 0 0 0</pose>
-          <geometry><cylinder><radius>1.9</radius><length>32.0</length></cylinder></geometry>
-          <material><ambient>0.2 0.3 0.5 1</ambient><diffuse>0.25 0.4 0.65 1</diffuse><specular>0.7 0.7 0.8 1</specular></material>
-        </visual>
+        <!-- Stage 1 Hydrotreating Reactor R-401 (3.6m ID x 28m Height, 155 bar heavy wall) -->
+        <collision name="hcu_r1_col"><pose>-4.0 0 16.0 0 0 0</pose><geometry><cylinder><radius>1.8</radius><length>28.0</length></cylinder></geometry></collision>
+        <visual name="hcu_r1_vis"><pose>-4.0 0 16.0 0 0 0</pose><geometry><cylinder><radius>1.8</radius><length>28.0</length></cylinder></geometry><material><ambient>0.2 0.3 0.5 1</ambient><diffuse>0.25 0.4 0.65 1</diffuse><specular>0.7 0.7 0.8 1</specular></material></visual>
+        
+        <!-- Stage 2 Hydrocracking Reactor R-402 (3.8m ID x 32m Height, 165 bar) -->
+        <collision name="hcu_r2_col"><pose>4.0 0 18.0 0 0 0</pose><geometry><cylinder><radius>1.9</radius><length>32.0</length></cylinder></geometry></collision>
+        <visual name="hcu_r2_vis"><pose>4.0 0 18.0 0 0 0</pose><geometry><cylinder><radius>1.9</radius><length>32.0</length></cylinder></geometry><material><ambient>0.2 0.3 0.5 1</ambient><diffuse>0.25 0.4 0.65 1</diffuse><specular>0.7 0.7 0.8 1</specular></material></visual>
+        
+        <!-- High Pressure Separator V-401 (150 bar) -->
+        <visual name="hcu_sep_vis"><pose>12.0 0 10.0 0 0 0</pose><geometry><cylinder><radius>1.4</radius><length>16.0</length></cylinder></geometry><material><ambient>0.7 0.7 0.75 1</ambient><diffuse>0.8 0.8 0.85 1</diffuse></material></visual>
       </link>
     </model>
 
-    <!-- 5. DELAYED COKING DRUMS (DCU / V-401A & V-401B) -->
+    <!-- ═════════════════════════════════════════════════════════════════════════ -->
+    <!-- 5. UNIT 500: DELAYED COKING COMPLEX (DCU / D-501A & D-501B)              -->
+    <!-- Coordinates: [85.0, -45.0, 0.0]                                           -->
+    <!-- ═════════════════════════════════════════════════════════════════════════ -->
     <model name="delayed_coking_drums">
       <static>true</static>
-      <pose>22 32 0 0 0 0</pose>
+      <pose>85 -45 0 0 0 0</pose>
       <link name="coker_link">
-        <!-- Coke Drum A (8.5m ID x 34m height) -->
-        <collision name="coker_a_col">
-          <pose>-5.5 0 21.0 0 0 0</pose>
-          <geometry><cylinder><radius>4.25</radius><length>34.0</length></cylinder></geometry>
-        </collision>
-        <visual name="coker_a_vis">
-          <pose>-5.5 0 21.0 0 0 0</pose>
-          <geometry><cylinder><radius>4.25</radius><length>34.0</length></cylinder></geometry>
-          <material><ambient>0.3 0.35 0.4 1</ambient><diffuse>0.4 0.45 0.5 1</diffuse></material>
-        </visual>
-        <!-- Coke Drum B (8.5m ID x 34m height) -->
-        <collision name="coker_b_col">
-          <pose>5.5 0 21.0 0 0 0</pose>
-          <geometry><cylinder><radius>4.25</radius><length>34.0</length></cylinder></geometry>
-        </collision>
-        <visual name="coker_b_vis">
-          <pose>5.5 0 21.0 0 0 0</pose>
-          <geometry><cylinder><radius>4.25</radius><length>34.0</length></cylinder></geometry>
-          <material><ambient>0.3 0.35 0.4 1</ambient><diffuse>0.4 0.45 0.5 1</diffuse></material>
-        </visual>
-        <!-- Decoking Derrick Tower on Drum Top -->
-        <visual name="derrick_tower">
-          <pose>0 0 46.0 0 0 0</pose>
-          <geometry><box><size>18.0 6.0 20.0</size></geometry>
-          <material><ambient>0.9 0.8 0.2 1</ambient><diffuse>0.9 0.8 0.2 1</diffuse></material>
-        </visual>
+        <!-- Coke Drum A (8.5m ID x 34m Height) -->
+        <collision name="coker_a_col"><pose>-5.5 0 21.0 0 0 0</pose><geometry><cylinder><radius>4.25</radius><length>34.0</length></cylinder></geometry></collision>
+        <visual name="coker_a_vis"><pose>-5.5 0 21.0 0 0 0</pose><geometry><cylinder><radius>4.25</radius><length>34.0</length></cylinder></geometry><material><ambient>0.3 0.35 0.4 1</ambient><diffuse>0.4 0.45 0.5 1</diffuse></material></visual>
+        
+        <!-- Coke Drum B (8.5m ID x 34m Height) -->
+        <collision name="coker_b_col"><pose>5.5 0 21.0 0 0 0</pose><geometry><cylinder><radius>4.25</radius><length>34.0</length></cylinder></geometry></collision>
+        <visual name="coker_b_vis"><pose>5.5 0 21.0 0 0 0</pose><geometry><cylinder><radius>4.25</radius><length>34.0</length></cylinder></geometry><material><ambient>0.3 0.35 0.4 1</ambient><diffuse>0.4 0.45 0.5 1</diffuse></material></visual>
+        
+        <!-- Top Hydraulic Decoking Derrick Structure (48m High Structure) -->
+        <visual name="derrick_tower"><pose>0 0 46.0 0 0 0</pose><geometry><box><size>18.0 6.0 20.0</size></geometry><material><ambient>0.9 0.8 0.2 1</ambient><diffuse>0.9 0.8 0.2 1</diffuse></material></visual>
+        
+        <!-- Coker Fired Heater H-501 (495 C) -->
+        <visual name="coker_heater"><pose>-18.0 0 8.0 0 0 0</pose><geometry><box><size>10.0 8.0 16.0</size></geometry><material><ambient>0.85 0.5 0.2 1</ambient><diffuse>0.9 0.55 0.25 1</diffuse></material></visual>
       </link>
     </model>
 
-    <!-- 6. MULTI-TIER PROCESS PIPE RACK SPINE -->
+    <!-- ═════════════════════════════════════════════════════════════════════════ -->
+    <!-- 6. MULTI-TIER PROCESS PIPE RACK SPINE                                     -->
+    <!-- Coordinates: [0.0, 0.0, 0.0] across ISBL battery limits                    -->
+    <!-- ═════════════════════════════════════════════════════════════════════════ -->
     <model name="pipe_rack_spine">
       <static>true</static>
-      <pose>20 -5 0 0 0 0</pose>
+      <pose>0 0 0 0 0 0</pose>
       <link name="rack_link">
-        <!-- Long Transverse Beam Array -->
-        <visual name="rack_structure">
-          <pose>0 0 6.0 0 0 0</pose>
-          <geometry><box><size>80.0 6.0 12.0</size></geometry>
-          <material><ambient>0.2 0.2 0.25 1</ambient><diffuse>0.3 0.3 0.35 1</diffuse></material>
-        </visual>
-        <!-- High Pressure Steam Header Pipe (Yellow) -->
-        <visual name="steam_header">
-          <pose>0 1.5 10.5 0 1.57 0</pose>
-          <geometry><cylinder><radius>0.4</radius><length>80.0</length></cylinder></geometry>
-          <material><ambient>0.9 0.8 0.1 1</ambient><diffuse>0.95 0.85 0.1 1</diffuse></material>
-        </visual>
-        <!-- Hydrocarbon Header Pipe (Green) -->
-        <visual name="hc_header">
-          <pose>0 -1.5 6.5 0 1.57 0</pose>
-          <geometry><cylinder><radius>0.5</radius><length>80.0</length></cylinder></geometry>
-          <material><ambient>0.1 0.6 0.2 1</ambient><diffuse>0.15 0.7 0.25 1</diffuse></material>
-        </visual>
+        <!-- Structural Steel Framework (320 m Long x 12 m Wide x 12 m High) -->
+        <visual name="rack_structure"><pose>0 0 6.0 0 0 0</pose><geometry><box><size>320.0 12.0 12.0</size></geometry><material><ambient>0.2 0.2 0.25 1</ambient><diffuse>0.3 0.3 0.35 1</diffuse></material></visual>
+        
+        <!-- High Pressure Steam Header Pipe (Yellow, Upper Tier +10.5m) -->
+        <visual name="steam_header"><pose>0 2.5 10.5 0 1.57 0</pose><geometry><cylinder><radius>0.4</radius><length>320.0</length></cylinder></geometry><material><ambient>0.9 0.8 0.1 1</ambient><diffuse>0.95 0.85 0.1 1</diffuse></material></visual>
+        
+        <!-- Hydrocarbon Process Header Pipe (Green, Lower Tier +4.5m) -->
+        <visual name="hc_header"><pose>0 -2.5 4.5 0 1.57 0</pose><geometry><cylinder><radius>0.5</radius><length>320.0</length></cylinder></geometry><material><ambient>0.1 0.6 0.2 1</ambient><diffuse>0.15 0.7 0.25 1</diffuse></material></visual>
+        
+        <!-- Utility Water Header (Blue, Mid Tier +7.5m) -->
+        <visual name="water_header"><pose>0 0.0 7.5 0 1.57 0</pose><geometry><cylinder><radius>0.35</radius><length>320.0</length></cylinder></geometry><material><ambient>0.1 0.3 0.8 1</ambient><diffuse>0.15 0.4 0.9 1</diffuse></material></visual>
       </link>
     </model>
 
-    <!-- 7. ELEVATED REFINERY FLARE STACK (FL-501) -->
+    <!-- ═════════════════════════════════════════════════════════════════════════ -->
+    <!-- 7. CENTRAL CONTROL ROOM (CCR / BLAST RESISTANT BUILDING)                  -->
+    <!-- Coordinates: [10.0, -30.0, 0.0] (API RP 752 / 753 Blast Hardened)         -->
+    <!-- ═════════════════════════════════════════════════════════════════════════ -->
+    <model name="central_control_room">
+      <static>true</static>
+      <pose>10 -30 0 0 0 0</pose>
+      <link name="ccr_link">
+        <collision name="ccr_col"><pose>0 0 4.0 0 0 0</pose><geometry><box><size>40.0 25.0 8.0</size></geometry></collision>
+        <visual name="ccr_vis"><pose>0 0 4.0 0 0 0</pose><geometry><box><size>40.0 25.0 8.0</size></geometry><material><ambient>0.7 0.75 0.8 1</ambient><diffuse>0.8 0.85 0.9 1</diffuse></material></visual>
+      </link>
+    </model>
+
+    <!-- ═════════════════════════════════════════════════════════════════════════ -->
+    <!-- 8. REFINERY STORAGE TANK FARM (TK-101 to TK-104)                          -->
+    <!-- Coordinates: [-100.0, -50.0, 0.0]                                         -->
+    <!-- ═════════════════════════════════════════════════════════════════════════ -->
+    <model name="tank_farm">
+      <static>true</static>
+      <pose>-100 -50 0 0 0 0</pose>
+      <link name="tanks_link">
+        <!-- Crude Oil Storage Tank 1 (68m Dia x 18.5m Height, Floating Roof) -->
+        <collision name="tank1_col"><pose>-35 0 9.25 0 0 0</pose><geometry><cylinder><radius>24.0</radius><length>18.5</length></cylinder></geometry></collision>
+        <visual name="tank1_vis"><pose>-35 0 9.25 0 0 0</pose><geometry><cylinder><radius>24.0</radius><length>18.5</length></cylinder></geometry><material><ambient>0.85 0.85 0.85 1</ambient><diffuse>0.9 0.9 0.9 1</diffuse></material></visual>
+        
+        <!-- Finished ULSD Diesel Product Tank 2 -->
+        <collision name="tank2_col"><pose>35 0 9.25 0 0 0</pose><geometry><cylinder><radius>20.0</radius><length>18.5</length></cylinder></geometry></collision>
+        <visual name="tank2_vis"><pose>35 0 9.25 0 0 0</pose><geometry><cylinder><radius>20.0</radius><length>18.5</length></cylinder></geometry><material><ambient>0.85 0.85 0.85 1</ambient><diffuse>0.9 0.9 0.9 1</diffuse></material></visual>
+        
+        <!-- Containment Bund Dyke Wall (110% Capacity per NFPA 30) -->
+        <visual name="dyke_wall"><pose>0 0 1.2 0 0 0</pose><geometry><box><size>130.0 80.0 2.4</size></geometry><material><ambient>0.4 0.4 0.4 1</ambient><diffuse>0.45 0.45 0.45 1</diffuse></material></visual>
+      </link>
+    </model>
+
+    <!-- ═════════════════════════════════════════════════════════════════════════ -->
+    <!-- 9. ELEVATED REFINERY SAFETY FLARE STACK (API 521 COMPLIANT)               -->
+    <!-- Coordinates: [160.0, 60.0, 0.0]                                           -->
+    <!-- ═════════════════════════════════════════════════════════════════════════ -->
     <model name="flare_stack">
       <static>true</static>
-      <pose>95 65 0 0 0 0</pose>
+      <pose>160 60 0 0 0 0</pose>
       <link name="flare_link">
-        <!-- 90m Tall Flare Riser -->
-        <collision name="flare_col">
-          <pose>0 0 45.0 0 0 0</pose>
-          <geometry><cylinder><radius>0.65</radius><length>90.0</length></cylinder></geometry>
-        </collision>
-        <visual name="flare_riser">
-          <pose>0 0 45.0 0 0 0</pose>
-          <geometry><cylinder><radius>0.65</radius><length>90.0</length></cylinder></geometry>
-          <material><ambient>0.8 0.8 0.8 1</ambient><diffuse>0.9 0.9 0.9 1</diffuse></material>
-        </visual>
+        <!-- 90m Tall Flare Riser (API 521 Sterile Exclusion Radius = 150m) -->
+        <collision name="flare_col"><pose>0 0 45.0 0 0 0</pose><geometry><cylinder><radius>0.9</radius><length>90.0</length></cylinder></geometry></collision>
+        <visual name="flare_riser"><pose>0 0 45.0 0 0 0</pose><geometry><cylinder><radius>0.9</radius><length>90.0</length></cylinder></geometry><material><ambient>0.8 0.8 0.8 1</ambient><diffuse>0.9 0.9 0.9 1</diffuse></material></visual>
+        
         <!-- Flare Tip & Simulated Pilot Flame -->
-        <visual name="flare_flame">
-          <pose>0 0 92.5 0 0 0</pose>
-          <geometry><cone><radius>1.8</radius><length>5.0</length></cone></geometry>
+        <visual name="flare_flame"><pose>0 0 93.0 0 0 0</pose><geometry><cone><radius>2.2</radius><length>6.0</length></cone></geometry>
           <material>
             <ambient>1.0 0.4 0.0 1</ambient>
             <diffuse>1.0 0.5 0.0 1</diffuse>
             <emissive>1.0 0.6 0.1 1</emissive>
           </material>
-        </visual>
-      </link>
-    </model>
-
-    <!-- 8. REFINERY STORAGE TANK FARM (TK-601 to TK-604) -->
-    <model name="tank_farm">
-      <static>true</static>
-      <pose>-35 -35 0 0 0 0</pose>
-      <link name="tanks_link">
-        <!-- Crude Oil Storage Tank 1 (68m dia x 18.5m height) -->
-        <collision name="tank1_col">
-          <pose>0 0 9.25 0 0 0</pose>
-          <geometry><cylinder><radius>18.0</radius><length>18.5</length></cylinder></geometry>
-        </collision>
-        <visual name="tank1_vis">
-          <pose>0 0 9.25 0 0 0</pose>
-          <geometry><cylinder><radius>18.0</radius><length>18.5</length></cylinder></geometry>
-          <material><ambient>0.85 0.85 0.85 1</ambient><diffuse>0.9 0.9 0.9 1</diffuse></material>
-        </visual>
-        <!-- Finished Diesel Product Tank 2 -->
-        <visual name="tank2_vis">
-          <pose>45 0 9.25 0 0 0</pose>
-          <geometry><cylinder><radius>15.0</radius><length>18.5</length></cylinder></geometry>
-          <material><ambient>0.85 0.85 0.85 1</ambient><diffuse>0.9 0.9 0.9 1</diffuse></material>
         </visual>
       </link>
     </model>

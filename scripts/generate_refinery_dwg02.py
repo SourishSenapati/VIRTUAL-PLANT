@@ -118,9 +118,10 @@ def generate_refinery_dwg02(out_pdf, out_png):
     
     # ═════════════════════════════════════════════════════════════════════════
     # RIGHT TOP: RIAZI-DAUBERT TBP DISTILLATION CURVE GRAPH
+    # BOUNDS: X = 14.5 to 27.7 cm (Width = 13.2 cm <= 28.0 cm)
     # ═════════════════════════════════════════════════════════════════════════
-    GX0, GY0 = 14.8, 10.4
-    GW, GH = 13.6, 6.0
+    GX0, GY0 = 14.5, 10.4
+    GW, GH = 13.2, 6.0
     
     cad_rect(ax, GX0, GY0, GW, GH, lw=0.85, fill=True)
     cad_text(ax, GX0 + GW/2, GY0 + GH + 0.35, 'TRUE BOILING POINT (TBP) DISTILLATION CURVE & FRACTIONATION CUT-POINTS', sz=4.8, bold=True)
@@ -162,22 +163,23 @@ def generate_refinery_dwg02(out_pdf, out_png):
     
     # ═════════════════════════════════════════════════════════════════════════
     # RIGHT BOTTOM: DETAILED FRACTIONATION SPECIFICATIONS TABLES
+    # BOUNDS: X = 14.5 to 27.7 cm | Y = 3.4 to 7.8 cm
     # ═════════════════════════════════════════════════════════════════════════
     t1_headers = ['FRACTION STREAM', 'CUT T (C)', 'YIELD (wt%)', 'MASS (kg/h)', 'API', 'DOWNSTREAM UNIT']
     t1_rows = [
         ['Off-Gas & LPG', '< 35 C', '7.06 %', '39,858', '95.0', 'Amine Treating -> LPG Spheres'],
         ['Light Naphtha', '35 - 80 C', '5.56 %', '31,417', '72.0', 'Isomerization Unit (RON 88)'],
-        ['Heavy Naphtha', '80 - 150 C', '11.83 %', '66,816', '54.5', 'NHT -> Platformer (RON 102)'],
+        ['Heavy Naphtha', '80 - 150 C', '11.83 %', '66,816', '54.5', 'NHT -> CCR Platformer (RON 102)'],
         ['Kerosene / Jet A-1', '150 - 240 C', '17.93 %', '101,220', '42.0', 'Merox Sweetening -> Jet Pool'],
-        ['Diesel / AGO', '240 - 360 C', '21.78 %', '123,012', '34.0', 'Diesel HDS -> ULSD Blend'],
+        ['Diesel / AGO', '240 - 360 C', '21.78 %', '123,012', '34.0', 'Diesel Hydrotreating -> ULSD Blend'],
         ['Light Vacuum Gas Oil', '360 - 440 C', '10.98 %', '61,993', '26.0', 'Hydrocracker / Diesel Blend'],
         ['Heavy Vacuum Gas Oil', '440 - 540 C', '9.66 %', '54,526', '20.5', 'FCCU (60%) & HCU (40%) Feed'],
         ['Vacuum Residue (VR)', '> 540 C', '15.20 %', '85,828', '5.5', 'Delayed Coking Unit (DCU)'],
     ]
-    t1_col_w = [3.8, 2.0, 1.8, 2.0, 1.2, 2.8]
-    cad_draw_table_a4(ax, 14.8, 4.40, t1_headers, t1_rows, t1_col_w,
-                      row_h=0.32, title='TABLE 1: PRIMARY FRACTIONATION CUT-POINTS & STREAM YIELDS',
-                      title_sz=4.6, sz=3.7)
+    t1_col_w = [3.8, 1.9, 1.8, 1.9, 1.1, 2.7]  # Sum = 13.2 cm (Ends at 14.5 + 13.2 = 27.7 cm)
+    cad_draw_table_a4(ax, 14.5, 3.40, t1_headers, t1_rows, t1_col_w,
+                      row_h=0.33, title='TABLE 1: PRIMARY FRACTIONATION CUT-POINTS & STREAM YIELDS',
+                      title_sz=4.6, sz=3.6)
     
     # Save Outputs
     fig.savefig(out_pdf, format='pdf', dpi=300)

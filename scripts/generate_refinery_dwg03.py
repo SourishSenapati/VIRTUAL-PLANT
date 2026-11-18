@@ -258,22 +258,22 @@ def generate_refinery_dwg03(out_pdf, out_png):
     headers = [
         'CONVERSION UNIT / METRIC', 'FLUID CATALYTIC CRACKING (FCCU)', 'HYDROCRACKER COMPLEX (HCU)', 'DELAYED COKING UNIT (DCU)'
     ]
-    col_w = [6.2, 7.1, 7.5, 6.9]
+    col_w = [5.6, 6.9, 7.2, 6.7]
     table_rows = [
         ['Primary Objective & Function', 'Maximum High-Octane Gasoline (RON 93)', 'Max Middle Distillates (Jet/ULSD)', 'Zero Fuel Oil / Solid Carbon Reject'],
         ['Operating Mechanism & Phase', 'Heterogeneous Fluidized Catalytic (Vap)', 'Fixed Bed Catalytic (Trickle Phase)', 'Thermal Non-Catalytic Pyrolysis (Liq/Vap)'],
         ['Operating Pressure & Temp', '2.5 bar(g)  |  535 C Riser / 710 C Regen', '155 bar(g)  |  390 - 410 C Reactor Bed', '2.2 bar(g)  |  495 C Heater / 460 C Drum'],
         ['Catalyst System & Form', 'Zeolite Y / USY Microspheres (75 um)', 'NiMo (Stg 1) + Pt/Zeolite (Stg 2)', 'None (Free Radical Thermal Polymerization)'],
         ['Feedstock Quality & Diet', 'HVGO + LVGO (Conradson Carbon < 0.5%)', 'HVGO + Heavy Coker Gas Oil (HCGO)', 'Vacuum Residue (VR, 538 C+, CCR 18-22 wt%)'],
-        ['Major High-Value Products', 'Gasoline (51.2%), Propylene/LPG (18.6%)', 'ULSD (48.4%, S<10ppm), Jet Fuel (24.2%)', 'LCGO/HCGO (48.1%), Anode Coke (32.4%)'],
+        ['Major High-Value Products', 'Gasoline (48.8%), Propylene/LPG (17.5%)', 'ULSD (51.5%, S<10ppm), Jet Fuel (27.5%)', 'LCGO (32.5%), Petroleum Coke (28.5%)'],
         ['Hydrogen Consumption / Offgas', 'Negligible H2 (+0.2% Net offgas H2)', 'High Cons: 2.4 - 2.8 wt% Feed H2', 'None (Net Offgas Rich in C1-C4 Fuel Gas)'],
         ['Decoking / Regeneration Mode', 'Continuous Air Blast in R-302 (CO2/CO)', 'Cyclic in-situ Catalyst Regeneration (2-3 yr)', '24h Batch Hydraulic Drill (Water 250 bar)'],
-        ['Downstream Product Quality', 'RON 92.5 - 94.0 | Olefinic Gasoline', 'Cetane Index > 58 | Sulfur < 8 ppm', 'Coker Naphtha (Needs HDS) | Sponge Coke'],
-        ['Gazebo & ROS 2 Simulation Tag', 'virtual_refinery/fccu_node (Kinetics)', 'virtual_refinery/hcu_node (155 bar)', 'virtual_refinery/coker_node (Drum A/B)']
+        ['Downstream Product Quality', 'RON 92.5 - 94.0 | Olefinic Gasoline', 'Cetane Index > 58 | Sulfur < 10 ppm', 'Coker Naphtha (Needs HDS) | Sponge Coke'],
+        ['Gazebo & ROS 2 Simulation Tag', 'virtual_refinery/conversion_units [FCC]', 'virtual_refinery/conversion_units [HCU]', 'virtual_refinery/conversion_units [DCU]']
     ]
-    cad_draw_table_a4(ax, 1.0, 3.45, headers, table_rows, col_w, row_h=0.45,
-                      title='REFINERY HEAVY-END UPGRADING UNITS: KINETIC, THERMODYNAMIC & OPERATIONAL MATRIX',
-                      title_sz=4.8, sz=3.8)
+    cad_draw_table_a4(ax, 1.4, 3.40, headers, table_rows, col_w, row_h=0.35,
+                      title='TABLE 1: REFINERY HEAVY-END UPGRADING UNITS: KINETIC, THERMODYNAMIC & OPERATIONAL MATRIX',
+                      title_sz=4.6, sz=3.6)
     
     # Save Figure
     os.makedirs(os.path.dirname(out_pdf), exist_ok=True)

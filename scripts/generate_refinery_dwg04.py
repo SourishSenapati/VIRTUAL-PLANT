@@ -204,10 +204,10 @@ def generate_refinery_dwg04(out_pdf, out_png):
     headers = [
         'EQUIPMENT / UNIT BLOCK', 'GAZEBO COORD [X, Y, Z] (m)', 'DIMENSIONS (LxWxH m)', 'MIN SPACING CODE', 'SAFETY CRITERIA & HAZARD CLASSIFICATION'
     ]
-    col_w = [5.5, 5.2, 4.8, 4.0, 8.2]
+    col_w = [5.2, 4.8, 4.4, 3.8, 8.2]
     table_rows = [
         ['Unit 100: Atmospheric CDU (C-101)', '[-120.0, 45.0, 0.0]', '60.0 x 50.0 x 62.0', 'API RP 500 / OISD', 'Fired heater H-101 separated 15 m from column shell'],
-        ['Unit 200: Vacuum VDU (C-201)', '[-60.0, 45.0, 0.0]', '50.0 x 45.0 x 48.0', 'API RP 500 / OISD', 'Vacuum ejector barometric seal leg & sour water sump'],
+        ['Unit 200: Vacuum VDU (C-102)', '[-60.0, 45.0, 0.0]', '50.0 x 45.0 x 48.0', 'API RP 500 / OISD', 'Vacuum ejector barometric seal leg & sour water sump'],
         ['Unit 300: FCCU Riser / Regen', '[10.0, 50.0, 0.0]', '70.0 x 60.0 x 65.0', 'OISD-118 Cl 5.2', 'Catalyst hopper separation; CO boiler flue ducting'],
         ['Unit 400: Hydrocracker Complex', '[85.0, 50.0, 0.0]', '80.0 x 65.0 x 42.0', 'NFPA 30 Class I', 'High-pressure H2 zone (155 bar); 30 m blast buffer'],
         ['Unit 500: Delayed Coker (Drums A/B)', '[85.0, -45.0, 0.0]', '75.0 x 55.0 x 92.0', 'OISD-118 Cl 6.4', 'Coke pit deluge system; unheading blast shield separation'],
@@ -215,9 +215,9 @@ def generate_refinery_dwg04(out_pdf, out_png):
         ['Elevated Flare Stack (API 521)', '[160.0, 60.0, 0.0]', 'Dia 1.8 m x H 90.0 m', 'API 521 Sec 5.4', 'Sterile radius R=150 m (thermal radiation < 4.7 kW/m2)'],
         ['Central Control Room (CCR)', '[10.0, -30.0, 0.0]', '40.0 x 25.0 x 8.0', 'API RP 752 / 753', 'Blast-resistant design (69 kPa); positive pressurization']
     ]
-    cad_draw_table_a4(ax, 1.0, 3.45, headers, table_rows, col_w, row_h=0.45,
-                      title='REFINERY BATTERY LIMITS, GAZEBO SPATIAL LAYOUT & INDUSTRIAL SAFETY SPACING STANDARDS',
-                      title_sz=4.8, sz=3.8)
+    cad_draw_table_a4(ax, 1.4, 3.40, headers, table_rows, col_w, row_h=0.35,
+                      title='TABLE 1: REFINERY BATTERY LIMITS, GAZEBO SPATIAL LAYOUT & INDUSTRIAL SAFETY SPACING STANDARDS',
+                      title_sz=4.6, sz=3.6)
     
     # Save Figure
     os.makedirs(os.path.dirname(out_pdf), exist_ok=True)

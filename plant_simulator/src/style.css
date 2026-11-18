@@ -1,0 +1,81 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ==========================================================================
+   R-201 Ethylene Oxide Reactor Workstation Design System
+   Human-Pleasing Precision Editorial Palette (Strict Anti-Slop: Zero Grey Fog, Zero Liquid Glass)
+   Lead Chemical & Process Engineer: Sourish Senapati (Roll: 002310301035)
+   Jadavpur University
+   ========================================================================== */
+
+:root {
+  --canvas-bg: #FAF7F2;
+  --surface-panel: #FFFFFF;
+  --surface-hover: #F3EDE2;
+  --surface-card: #FAF8F5;
+  --border-hairline: #E5DDD0;
+  --border-subtle: #D8CEBD;
+
+  --text-primary: #181512;
+  --text-secondary: #473E35;
+  --text-muted: #736859;
+
+  --accent-cta: #D97706;
+  --accent-cta-hover: #B45309;
+  --accent-cyan: #0284C7;
+  --accent-green: #059669;
+  --accent-red: #DC2626;
+}
+
+html.dark, :root {
+  --canvas-bg: #0A0D14;
+  --surface-panel: #101520;
+  --surface-hover: #171E2D;
+  --surface-card: #131926;
+  --border-hairline: #222C3D;
+  --border-subtle: #313E54;
+
+  --text-primary: #FFFFFF;
+  --text-secondary: #E2E8F0;
+  --text-muted: #94A3B8;
+
+  --accent-cta: #F59E0B;
+  --accent-cta-hover: #D97706;
+  --accent-cyan: #00B4D8;
+  --accent-green: #10B981;
+  --accent-red: #EF4444;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  background-color: var(--canvas-bg);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Precision Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--canvas-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
