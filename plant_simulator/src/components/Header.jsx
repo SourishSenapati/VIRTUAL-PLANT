@@ -1,11 +1,11 @@
 import React from 'react';
-import { Box, Activity, ShieldCheck, GitBranch, Download, Layers } from 'lucide-react';
-import { REACTOR_SPECS } from '../data/reactorData';
+import { Box, Activity, ShieldCheck, GitBranch, Download, AlertTriangle } from 'lucide-react';
 
 export default function Header({ activeTab, setActiveTab }) {
   const tabs = [
     { id: '3d_cad', label: '3D CAD Digital Twin', icon: Box, badge: 'SolidWorks 2025' },
     { id: 'kinetics', label: 'Kinetics & Ergun Hydraulics', icon: Activity, badge: 'Problem R2' },
+    { id: 'emergency_drill', label: 'SIL-3 Safety & Runaway Twin', icon: AlertTriangle, badge: 'What-If ESD' },
     { id: 'asme_code', label: 'ASME Sec VIII Mechanical', icon: ShieldCheck, badge: 'Code Dossier' },
     { id: 'piping_pid', label: 'ISA-5.1 P&ID & Line Lists', icon: GitBranch, badge: 'Zero Disconnects' },
     { id: 'assets', label: 'CAD & Blueprint Assets', icon: Download, badge: 'STEP / DXF / PDF' }
