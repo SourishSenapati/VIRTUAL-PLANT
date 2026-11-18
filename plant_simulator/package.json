@@ -2,6 +2,8 @@
   "name": "r201-reactor-engineering-portal",
   "version": "1.0.0",
   "private": true,
+  "license": "CC-BY-NC-4.0",
+  "author": "Sourish Senapati (Roll: 002310301035)",
   "type": "module",
   "scripts": {
     "dev": "vite",
